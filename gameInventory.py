@@ -2,6 +2,11 @@
 # so they work according to the specification
 
 
+# Returns with the length of the longest item from the given parameter
+def max_length_item_from_list(the_list):
+    return max([len(str(i)) for i in list(the_list)])
+
+
 # Displays the inventory.
 def display_inventory(inventory):
     max_length = len(str(max(list(inventory.values()))))
