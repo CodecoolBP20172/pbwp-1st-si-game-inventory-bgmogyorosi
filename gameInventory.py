@@ -12,7 +12,12 @@ def display_inventory(inventory):
 
 # Adds to the inventory dictionary a list of items from added_items.
 def add_to_inventory(inventory, added_items):
-    pass
+    for item in added_items:
+        if inventory.get(item):
+            inventory[item] += 1
+        else:
+            inventory.update({item: 1})
+    return inventory
 
 
 # Takes your inventory and displays it in a well-organized table with
