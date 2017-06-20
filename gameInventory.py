@@ -9,7 +9,9 @@ def max_length_item_from_list(the_list):
 
 # Displays the inventory.
 def display_inventory(inventory):
+    # Calculates the length of the longest number, to have a semi-formatted output.
     max_length = max_length_item_from_list(inventory.values())
+    print('Inventory:')
     for item in inventory:
         print('%{}d {}'.format(max_length, item) % inventory[item])
     print('Total number of items: {}'.format(sum(list(inventory.values()))))
@@ -18,9 +20,12 @@ def display_inventory(inventory):
 # Adds to the inventory dictionary a list of items from added_items.
 def add_to_inventory(inventory, added_items):
     for item in added_items:
+        # Check if there is any label with the name of the item.
         if inventory.get(item):
+            # If is, increases it's value by one.
             inventory[item] += 1
         else:
+            # If isn't, adds that item to the inventory with a starting number one.
             inventory.update({item: 1})
     return inventory
 
@@ -49,18 +54,20 @@ def print_table(inventory, order=''):
     else:
         # If there were no order parameter, or it was invalid, then it is random.
         inventory_sorted = inventory
-    # Calculates the first column width of our table
+    # Calulates the first column, the length of the longest item count, add increase it by 2 to be more readable.
     first_col_length = (
         max_length_item_from_list(inventory.values()) if max_length_item_from_list(
             inventory.values()) > len('count') else len('count')) + 2
-    # Calculates the second column width of our table
+    # Calulates the secong column, the length of the longest item name, add increase it by 4 to be more readable.
     second_col_length = (
         max_length_item_from_list(inventory.keys()) if max_length_item_from_list(
             inventory.keys()) > len('item name') else len('item name')) + 4
     # Write out the table, with the title
     print('Inventory:')
+    # Prints the header of the table in a formatted style.
     print('%{}s%{}s'.format(first_col_length, second_col_length) % ('count', 'item name'))
     print('-' * (first_col_length + second_col_length))
+    # Prints the items from the inventory in a formatted way
     for item in inventory_sorted:
         print('%{}d%{}s'.format(first_col_length, second_col_length) % (inventory[item], item))
     print('-' * (first_col_length + second_col_length))
@@ -74,7 +81,9 @@ def print_table(inventory, order=''):
 def import_inventory(inventory, filename='import_inventory.csv'):
     try:
         file = open(filename, "r")
+        # Creates a string without special characters, and then split it by ','.
         items = (''.join(i for i in file.read() if i.isalnum() or i in [',', ' '])).split(',')
+        # Calls the add_to_inventory with the items list.
         inventory = add_to_inventory(inventory, items)
     finally:
         file.close()
@@ -88,10 +97,9 @@ def import_inventory(inventory, filename='import_inventory.csv'):
 def export_inventory(inventory, filename='export_inventory.csv'):
     try:
         file = open(filename, "w")
+        # Creates a list with all of the items, using nested inline loops(comprehensions).
         content = [item for item in inventory for i in range(inventory[item])]
+        # Exports the list joined by ','.
         file.write(','.join(content))
     finally:
         file.close()
-
-
-export_inventory({'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12})
